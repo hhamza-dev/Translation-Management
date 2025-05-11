@@ -12,7 +12,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/translations?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
-      - JWT_SECRET=your-256-bit-secret-key-here-please-change-this
+      - JWT_SECRET=bXlzZWNyZXRrZXlmb3J0ZXN0aW5nMjU2Yml0c2VjdXJlMQ==
 
   db:
     image: mysql:8.0
