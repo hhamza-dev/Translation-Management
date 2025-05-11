@@ -1,0 +1,186 @@
+openapi: 3.0.3
+info:
+  title: Translation Service API
+  description: API for managing translations with support for creation, updates, search, and export.
+  version: 1.0.0
+
+paths:
+  /api/translations:
+    post:
+      summary: Create a new translation
+      operationId: createTranslation
+      tags:
+        - Translations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TranslationCreateDto'
+      responses:
+        '201':
+          description: Translation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslationResponseDto'
+
+  /api/translations/{id}:
+    get:
+      summary: Get a translation by ID
+      operationId: getTranslation
+      tags:
+        - Translations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Translation retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslationResponseDto'
+
+    put:
+      summary: Update an existing translation
+      operationId: updateTranslation
+      tags:
+        - Translations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TranslationUpdateDto'
+      responses:
+        '200':
+          description: Translation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslationResponseDto'
+
+  /api/translations/search:
+    get:
+      summary: Search translations based on criteria
+      operationId: searchTranslations
+      tags:
+        - Translations
+      parameters:
+        - name: key
+          in: query
+          schema:
+            type: string
+        - name: locale
+          in: query
+          schema:
+            type: string
+        - name: content
+          in: query
+          schema:
+            type: string
+        - name: tags
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: List of matching translations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TranslationResponseDto'
+
+  /api/translations/export/{locale}:
+    get:
+      summary: Export translations for a given locale
+      operationId: exportTranslations
+      tags:
+        - Translations
+      parameters:
+        - name: locale
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Map of translations for the locale
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+
+components:
+  schemas:
+    TranslationCreateDto:
+      type: object
+      properties:
+        key:
+          type: string
+        locale:
+          type: string
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - key
+        - locale
+        - content
+
+    TranslationUpdateDto:
+      type: object
+      properties:
+        key:
+          type: string
+        locale:
+          type: string
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    TranslationResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        key:
+          type: string
+        locale:
+          type: string
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - key
+        - locale
+        - content
